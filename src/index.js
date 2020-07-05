@@ -1,25 +1,32 @@
 const Hapi = require('@hapi/hapi');
 const Pino = require('hapi-pino');
 
+const KafkaProducerStream = require('./kafkaProducerStream');
+
 const init = async () => {
   const server = Hapi.server({
     port: 3000,
     host: 'localhost',
   });
 
-  // Add the route
   server.route({
     method: 'GET',
     path: '/',
-    async handler(request, h) {
+    async handler(request) {
+      const { text = 'hello world' } = request.query;
+
       // we don't want standard logging (we want to use pino)
       // request.log(['a', 'b'], 'Request into hello world');
 
       // you can also use a pino instance, which will be faster
-      request.logger.info('In handler %s', request.path);
+      request.logger.info('In handler %s, TEXT value is %s', request.path, text);
 
-      return 'hello world';
+      return text;
     },
+  });
+
+  const kafkaProducerStream = new KafkaProducerStream({
+    kafkaClient: { kafkaHost: 'localhost:9093' },
   });
 
   await server.register({
@@ -30,6 +37,7 @@ const init = async () => {
 
       // Redact Authorization headers, see https://getpino.io/#/docs/redaction
       redact: ['req.headers.authorization'],
+      stream: kafkaProducerStream,
     },
   });
 

@@ -34,11 +34,15 @@ services:
     depends_on:
       - zookeeper
   server-api:
+    image: 'hapi-pino-to-kafka:development'
+    networks:
+      - app-tier
     build:
       context: .
       dockerfile: Dockerfile-server
+    command: node_modules/.bin/nodemon --exec npm run start:server
     ports:
-      - '3019:3000'
+      - '3000:3000'
     volumes:
       # Mount the whole directory
       - .:/var/lib/app

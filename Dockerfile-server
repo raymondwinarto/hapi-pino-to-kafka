@@ -1,6 +1,13 @@
 FROM node:12.18.0
 
+RUN apt-get update
+
+COPY package.json package-lock.json /var/lib/app/
+
 WORKDIR /var/lib/app
-COPY . .
+
 RUN npm install
+
+COPY . .
+
 CMD node src/server/server.js

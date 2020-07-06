@@ -1,12 +1,15 @@
 const Hapi = require('@hapi/hapi');
 const Pino = require('hapi-pino');
 
-const KafkaProducerStream = require('./kafkaProducerStream');
+// const KafkaProducerStream = require('./kafkaProducerStream');
 
 const init = async () => {
   const server = Hapi.server({
     port: 3000,
-    host: 'localhost',
+    // The host property set to localhost is likely the safest choice.
+    // In a docker container, however, the localhost may not be accessible
+    // outside of the container and using host: '0.0.0.0' may be needed.
+    host: '0.0.0.0',
   });
 
   server.route({
@@ -25,9 +28,9 @@ const init = async () => {
     },
   });
 
-  const kafkaProducerStream = new KafkaProducerStream({
-    kafkaClient: { kafkaHost: 'localhost:9093' },
-  });
+  // const kafkaProducerStream = new KafkaProducerStream({
+  //   kafkaClient: { kafkaHost: 'kafka:9093' },
+  // });
 
   await server.register({
     plugin: Pino,
@@ -37,7 +40,7 @@ const init = async () => {
 
       // Redact Authorization headers, see https://getpino.io/#/docs/redaction
       redact: ['req.headers.authorization'],
-      stream: kafkaProducerStream,
+      // stream: kafkaProducerStream,
     },
   });
 

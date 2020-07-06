@@ -56,3 +56,11 @@ docker exec -it hapi-pino-to-kafka_kafka_1 bash
     --bootstrap-server 127.0.0.1:9092 --topic raymondtopic \
     --from-beginning
 ```
+
+# References
+- https://github.com/waldemarnt/node-docker-example
+
+# Notes/Further Readings
+- https://github.com/buildkite/nodejs-docker-example
+- https://github.com/b00giZm/docker-compose-nodejs-examples
+- https://medium.com/@b00giZm/building-the-next-version-of-compose-node-86eef3c23d5b

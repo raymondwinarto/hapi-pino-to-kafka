@@ -1,0 +1,6 @@
+FROM node:12.18.0
+
+WORKDIR /var/lib/app
+COPY . .
+RUN npm install
+CMD node src/server/server.js

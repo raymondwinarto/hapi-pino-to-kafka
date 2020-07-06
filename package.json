@@ -4,7 +4,7 @@
   "description": "HAPI project with pino logger to Kafka stream",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start:server": "node src/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

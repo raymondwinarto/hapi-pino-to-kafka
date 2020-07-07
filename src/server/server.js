@@ -1,7 +1,7 @@
 const Hapi = require('@hapi/hapi');
 const Pino = require('hapi-pino');
 
-// const KafkaProducerStream = require('./kafkaProducerStream');
+const KafkaProducerStream = require('./kafkaProducerStream');
 
 const init = async () => {
   const server = Hapi.server({
@@ -28,9 +28,9 @@ const init = async () => {
     },
   });
 
-  // const kafkaProducerStream = new KafkaProducerStream({
-  //   kafkaClient: { kafkaHost: 'kafka:9093' },
-  // });
+  const kafkaProducerStream = new KafkaProducerStream({
+    kafkaClient: { kafkaHost: 'kafka:9092' },
+  });
 
   await server.register({
     plugin: Pino,
@@ -40,7 +40,7 @@ const init = async () => {
 
       // Redact Authorization headers, see https://getpino.io/#/docs/redaction
       redact: ['req.headers.authorization'],
-      // stream: kafkaProducerStream,
+      stream: kafkaProducerStream,
     },
   });
 
